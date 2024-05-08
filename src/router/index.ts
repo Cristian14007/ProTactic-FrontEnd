@@ -1,13 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router"
 //import CarteleraView from "../views/CarteleraView.vue"
-import AboutUsView from "../views/AboutUsView.vue"
-import CarteleraView from "../views/CarteleraView.vue"
-import HorarioView from "../views/HorarioView.vue"
-import ReservaView from "../views/ReservaView.vue"
-import CompraView from "../views/CompraView.vue"
-import EntradaView from "../views/EntradaView.vue"
+import CreateExerciseView from "../views/CreateExerciseView.vue"
+import ExercisesView from "../views/ExercisesView.vue"
+import FilterView from "../views/FilterView.vue"
+import InfoView from "../views/InfoView.vue"
+import LoginView from "../views/LoginView.vue"
+import PlanView from "../views/PlanView.vue"
 import HomeView from "../views/HomeView.vue"
-import AdminView from "../views/AdminView.vue"
+import ProfileView from "../views/ProfileView.vue"
+import RegisterView from "../views/RegisterView.vue"
+import UsersView from "../views/UsersView.vue"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
@@ -17,45 +19,45 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: HomeView
-        },
-        {
-            path: '/cartelera',
-            name: 'cartelera',
-            component: CarteleraView
-        },
-        {
-            path: '/horario/:obraId',
-            name: 'HorarioView',
-            component: HorarioView
-        },
-        {
-            path: '/reserva/:obraId',
-            name: 'ReservaView',
-            component: ReservaView
-        },
-        {
-            path: '/compra/:obraId/:selectedSeats?',
-            name: 'CompraView',
-            component: CompraView,
-            props: true 
-        },
-        {
-            path: '/entrada/:obraId/:selectedSeats?',
-            name: 'EntradaView',
-            component: EntradaView
-        },
-        {
-            path: '/admin',
-            name: 'AdminView',
-            component: AdminView
-        },
-        {
-            path: '/about',
-            name: 'about',
-            component: AboutUsView
+            name: 'login',
+            component: LoginView
+         },
+         {
+             path: '/home',
+             name: 'home',
+             component: HomeView
         }
+        // {
+        //     path: '/horario/:obraId',
+        //     name: 'HorarioView',
+        //     component: HorarioView
+        // },
+        // {
+        //     path: '/reserva/:obraId',
+        //     name: 'ReservaView',
+        //     component: ReservaView
+        // },
+        // {
+        //     path: '/compra/:obraId/:selectedSeats?',
+        //     name: 'CompraView',
+        //     component: CompraView,
+        //     props: true 
+        // },
+        // {
+        //     path: '/entrada/:obraId/:selectedSeats?',
+        //     name: 'EntradaView',
+        //     component: EntradaView
+        // },
+        // {
+        //     path: '/admin',
+        //     name: 'AdminView',
+        //     component: AdminView
+        // },
+        // {
+        //     path: '/about',
+        //     name: 'about',
+        //     component: AboutUsView
+        // }
     ]
 })
 

@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import obras from "../App.vue"
-import Card from '../components/Card.vue'
-import EstrenosDisplay from "../components/EstrenosDisplay.vue"
-import AboutSlider from "../components/AboutSlider.vue"
+
 </script>
 
 <template>
