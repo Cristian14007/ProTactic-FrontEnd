@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import router from '../router';
+//import router from '../router';
 import { useFunctionStore } from '../stores/FunctionStore';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function goToRegister() {
+  router.push({ name: 'register' });
+}
 
 const email = ref('');
 const password = ref('');
@@ -33,7 +40,7 @@ async function handleLogin() {
     <!-- <button @click="handleLogin">Login</button> -->
     <p class="subtitle">
       ¿Nuevo en ProTactic?
-      <span class="subtitle-yellow" >Crea una cuenta</span>
+      <span class="subtitle-yellow" @click="goToRegister">Crea una cuenta</span>
     </p>
   </div>
 </template>
@@ -72,6 +79,7 @@ async function handleLogin() {
   font-size: 14px;
   font-weight: bold;
   color: #FAC710;
+  cursor: pointer;
 }
 .container-error {
   width: 100%;

@@ -26,12 +26,12 @@ const router = createRouter({
              path: '/home',
              name: 'home',
              component: HomeView
-        }
-        // {
-        //     path: '/horario/:obraId',
-        //     name: 'HorarioView',
-        //     component: HorarioView
-        // },
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: RegisterView
+          }
         // {
         //     path: '/reserva/:obraId',
         //     name: 'ReservaView',
