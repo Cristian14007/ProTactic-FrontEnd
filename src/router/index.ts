@@ -31,33 +31,43 @@ const router = createRouter({
             path: '/register',
             name: 'register',
             component: RegisterView
-          }
-        // {
-        //     path: '/reserva/:obraId',
-        //     name: 'ReservaView',
-        //     component: ReservaView
-        // },
-        // {
-        //     path: '/compra/:obraId/:selectedSeats?',
-        //     name: 'CompraView',
-        //     component: CompraView,
-        //     props: true 
-        // },
-        // {
-        //     path: '/entrada/:obraId/:selectedSeats?',
-        //     name: 'EntradaView',
-        //     component: EntradaView
-        // },
-        // {
-        //     path: '/admin',
-        //     name: 'AdminView',
-        //     component: AdminView
-        // },
-        // {
-        //     path: '/about',
-        //     name: 'about',
-        //     component: AboutUsView
-        // }
+          },
+          {
+              path: '/create',
+              name: 'create',
+              component: CreateExerciseView
+            },
+            {
+                path: '/exercises',
+                name: 'exercises',
+                component: ExercisesView
+              },
+              {
+                  path: '/filter',
+                  name: 'filter',
+                  component: FilterView
+                },
+                {
+                    path: '/info',
+                    name: 'info',
+                    component: InfoView
+                  },
+                  {
+                      path: '/plan',
+                      name: 'plan',
+                      component: PlanView
+                    },
+                    {
+                        path: '/profile',
+                        name: 'profile',
+                        component: ProfileView
+                      },
+                      {
+                          path: '/users',
+                          name: 'users',
+                          component: UsersView
+                        }
+       
     ]
 })
 

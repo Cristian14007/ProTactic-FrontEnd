@@ -9,14 +9,14 @@ const email = ref('');
 const password = ref('');
 const frase = ref('');
 const errorMessage = ref('');
-const passwordValidation = ref('');
+
     const nameError = ref(false);
     const apellido1Error = ref(false);
-    const apellido2Error = ref(false);
+
     const emailError = ref(false);
     const emailErrorExistente = ref(false);
     const passwordError = ref(false);
-    const passwordValidationError = ref(false);
+
 
     const navigateToLogin = () => {
         router.push({ name: 'login' });

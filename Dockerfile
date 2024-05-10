@@ -13,6 +13,9 @@ RUN npm install
 RUN npm install vite
 
 RUN npm install -D sass
+
+RUN npm install swiper vue-awesome-swiper --save
+
 # Copiar archivos del proyecto
 COPY . .
 
