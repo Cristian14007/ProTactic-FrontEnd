@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Login from "../components/LoginUser.vue"
+import Profile from "../components/ProfileUser.vue"
 </script>
 
 <template>
-<Login></Login>
+<Profile></Profile>
 </template>
 
 <style scoped>
-</style>../components/LoginUser.vue
+</style>
