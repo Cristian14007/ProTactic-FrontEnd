@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 
-interface User {
+export interface  User {
   userId?: number
     name: string;
     password: string;
@@ -12,17 +12,26 @@ interface User {
   }
 
   export const useFunctionStore = defineStore('functionStore', {
+    state: () => ({
+      user: ref<User | null>(null),
+    }),
     actions: {
       async fetchUser(email: string, password: string): Promise<User | null> {
         try {
           const response = await fetch(`http://localhost:5008/User`);
           const users: User[] = await response.json();
-          const user = users.find((user: User) => user.email === email && user.password === password);
-          return user ? user : null;  // Devuelve el usuario si lo encuentra, null si no
+          const user = users.find(user => user.email === email && user.password === password);
+          if (user) {
+            this.user = user;  // Guardamos el usuario en el estado
+          }
+          return user ? user : null;
         } catch (error) {
           console.error('Failed to fetch user:', error);
-          return null; // Manejo de error
+          return null;
         }
+      },
+      logout() {
+        this.user = null;  // Limpiar el usuario del estado
       },
       async checkUserExists(email: string): Promise<boolean> {
         try {
@@ -62,6 +71,46 @@ interface User {
             console.error('Failed to create user:', error);
             return null;
         }
-    }
+    },
+    async updateUser(updatedUser: Partial<User>): Promise<boolean> {
+      if (!updatedUser.userId) {
+          console.error('User ID is missing, cannot update user');
+          return false;
+      }
+      try {
+          const response = await fetch(`http://localhost:5008/User/${updatedUser.userId}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(updatedUser)
+          });
+          if (!response.ok) {
+              const errorText = await response.text();  // Usar .text() para manejar respuestas no-JSON
+              throw new Error(`Failed to update user: status ${response.status} - ${errorText}`);
+          }
+  
+          // Si la respuesta está vacía, no intentar analizarla como JSON
+          const text = await response.text();
+          try {
+              if (text) {
+                  const data = JSON.parse(text);  // Sólo analizar como JSON si hay contenido
+                  this.user = data;  // Actualiza el estado del usuario en el store
+                  return true;
+              } else {
+                  return true;  // Si no hay contenido, asumir que la actualización fue exitosa
+              }
+          } catch (e) {
+              console.error('Unexpected response format:', e);
+              return false;  // Si el contenido no puede ser analizado, considerar fallido
+          }
+      } catch (error) {
+          console.error('Failed to update user:', error);
+          return false;
+      }
+  }
+  
+    
+    
     }
   });

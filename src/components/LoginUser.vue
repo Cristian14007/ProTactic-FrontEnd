@@ -37,7 +37,6 @@ async function handleLogin() {
     </div>
     <p class="subtitle">¿Olvidaste tu contraseña?</p>
     <button class="button" @click="handleLogin"><span class="button-text">Login</span></button>
-    <!-- <button @click="handleLogin">Login</button> -->
     <p class="subtitle">
       ¿Nuevo en ProTactic?
       <span class="subtitle-yellow" @click="goToRegister">Crea una cuenta</span>
