@@ -8,7 +8,8 @@
         <figure>
           <img v-for="(image, i) in slider.images" :key="i" :src="image"
                class="foto" v-show="i === currentSlide[index]" 
-               :alt="`Slider image ${i + 1}`" />
+               :alt="`Slider image ${i + 1}`" 
+               @click="goToInfoView" />
         </figure>
         <button @click="prevSlide(index)">Prev</button>
         <button @click="nextSlide(index)">Next</button>
@@ -19,6 +20,9 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 import posesion from '@/assets/futbol/posesion.jpg';
 import centro from '@/assets/futbol/centro.jpg';
@@ -33,6 +37,9 @@ import bosesion from '@/assets/basket/posesion.jpg';
 import cuadra from '@/assets/futbol/cuadra.jpg';
 import panuelo from '@/assets/basket/panuelo.jpg';
 
+function goToInfoView() {
+  router.push({ name: 'exercises' });
+}
 
 type Slider = {
   title: string;
