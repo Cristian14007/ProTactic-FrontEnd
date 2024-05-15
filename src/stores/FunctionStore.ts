@@ -18,12 +18,16 @@ export interface  User {
     dificultad: string;
     intensidad: string;
     edad: number;
+    deporte: string;
+    personas: string;
+    objetivo: string;
   }
 
   export const useFunctionStore = defineStore('functionStore', {
     state: () => ({
       user: ref<User | null>(null),
-      ejercicios: [] as Exercise[]
+      ejercicios: [] as Exercise[],
+      filters: {} as any
     }),
     actions: {
       async fetchUser(email: string, password: string): Promise<User | null> {
@@ -123,12 +127,26 @@ export interface  User {
     try {
       const response = await fetch('http://localhost:5008/Exercise');
       if (!response.ok) {
-        throw new Error(`Failed to fetch exercises: status ${response.status}`);
+        throw new Error('Failed to fetch exercises');
       }
-      this.ejercicios = await response.json() as Exercise[];
+      const data = await response.json() as Exercise[];
+      this.ejercicios = this.applyFilters(data);  // Aplicar filtros después de cargar los datos
     } catch (error) {
-      console.error('Failed to fetch exercises:', error);
+      console.error("Failed to fetch exercises:", error);
     }
+  },
+  applyFilters(data: Exercise[]) {
+    return data.filter(exercise => 
+      (!this.filters.intensidad || exercise.intensidad === this.filters.intensidad) &&
+      (!this.filters.edad || exercise.edad === this.filters.edad) &&
+      (!this.filters.deporte || exercise.deporte === this.filters.deporte) &&
+      (!this.filters.objetivo || exercise.objetivo === this.filters.objetivo) &&
+      (!this.filters.personas || exercise.personas === this.filters.personas) &&
+      (!this.filters.dificultad || exercise.dificultad === this.filters.dificultad)
+    );
+  },
+  setFilters(filters: any) {
+    this.filters = filters;
   }
   
     

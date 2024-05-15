@@ -8,15 +8,19 @@ const store = useFunctionStore();
 
 // Asegúrate de cargar los ejercicios si aún no están cargados
 onMounted(() => {
-  if (store.ejercicios.length === 0) {
-    store.fetchEjercicios(); // Asume que esta función está implementada para cargar los ejercicios
+  if (!store.ejercicios.length) {
+    store.fetchEjercicios();
   }
 });
+
 
 const entrenamientos = computed(() => store.ejercicios);
 
 function goToExerciseDetails(exerciseId: number) {
   router.push({ name: 'info', params: { exerciseId } });
+}
+function goToFilter() {
+  router.push({ name: 'filter' });
 }
 </script>
 
@@ -24,8 +28,8 @@ function goToExerciseDetails(exerciseId: number) {
 <template>
   <div class="container-general">
     <div class="contenedor">
-      <button class="button">
-        <span class="button-text">Cambiar filtros</span>
+      <button class="button" @click="goToFilter();">
+        <span class="button-text" >Cambiar filtros</span>
       </button>
       <div v-for="entrenamiento in entrenamientos" :key="entrenamiento.exerciseId" class="tarjeta">
         <div class="info-con-foto">
