@@ -10,10 +10,20 @@ export interface  User {
     frase: string;
     plan: string;
   }
+  export interface Exercise {
+    exerciseId?: number
+    nombre: string;
+    img: string;
+    descripcion: string;
+    dificultad: string;
+    intensidad: string;
+    edad: number;
+  }
 
   export const useFunctionStore = defineStore('functionStore', {
     state: () => ({
       user: ref<User | null>(null),
+      ejercicios: [] as Exercise[]
     }),
     actions: {
       async fetchUser(email: string, password: string): Promise<User | null> {
@@ -108,6 +118,17 @@ export interface  User {
           console.error('Failed to update user:', error);
           return false;
       }
+  },
+  async fetchEjercicios() {
+    try {
+      const response = await fetch('http://localhost:5008/Exercise');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch exercises: status ${response.status}`);
+      }
+      this.ejercicios = await response.json() as Exercise[];
+    } catch (error) {
+      console.error('Failed to fetch exercises:', error);
+    }
   }
   
     

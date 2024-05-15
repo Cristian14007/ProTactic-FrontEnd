@@ -41,6 +41,7 @@ const router = createRouter({
                 path: '/exercises',
                 name: 'exercises',
                 component: ExercisesView
+                
               },
               {
                   path: '/filter',
@@ -48,7 +49,7 @@ const router = createRouter({
                   component: FilterView
                 },
                 {
-                    path: '/info',
+                    path: '/info:exerciseId',
                     name: 'info',
                     component: InfoView
                   },
