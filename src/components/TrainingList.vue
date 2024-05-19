@@ -33,7 +33,7 @@ function goToFilter() {
       </button>
       <div v-for="entrenamiento in entrenamientos" :key="entrenamiento.exerciseId" class="tarjeta">
         <div class="info-con-foto">
-          <img :src="entrenamiento.imagen" class="foto" />
+          <img :src="'src/assets/ejes/' + entrenamiento.imagen" class="foto" />
           <div class="info-tarjeta">
             <p class="nombre">{{ entrenamiento.nombre }}</p>
             <p class="descripcion">{{ entrenamiento.descripcion }}</p>
