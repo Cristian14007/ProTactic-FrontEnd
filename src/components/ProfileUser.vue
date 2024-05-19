@@ -25,7 +25,7 @@
         <p>No hay usuario logueado.</p>
       </div>
       <div class="botones">
-        <button class="button">
+        <button class="button" @click="navigateTo3">
           <span class="button-text">CAMBIAR PLAN</span>
         </button>
         <button class="button" @click="navigateTo2">
@@ -83,6 +83,9 @@ async function save() {
 
 const navigateTo2 = () => {
         router.push({ name: 'login' });
+    };
+    const navigateTo3 = () => {
+        router.push({ name: 'plan' });
     };
   
   function cancel() {

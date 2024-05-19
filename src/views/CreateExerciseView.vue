@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Login from "../components/LoginUser.vue"
+import CreateExercise from "../components/CreateExercise.vue"
 </script>
 
 <template>
-<Login></Login>
+<CreateExercise></CreateExercise>
 </template>
 
 <style scoped>

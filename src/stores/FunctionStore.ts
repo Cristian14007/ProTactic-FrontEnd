@@ -13,7 +13,7 @@ export interface  User {
   export interface Exercise {
     exerciseId?: number
     nombre: string;
-    img: string;
+    imagen: string;
     descripcion: string;
     dificultad: string;
     intensidad: string;
@@ -21,13 +21,22 @@ export interface  User {
     deporte: string;
     personas: string;
     objetivo: string;
+    material: string;
   }
+  export interface  Plan {
+    planId?: number
+      planes: string;
+      price: string;
+      descripcion: string;
+      precio: number;
+    }
 
   export const useFunctionStore = defineStore('functionStore', {
     state: () => ({
       user: ref<User | null>(null),
       ejercicios: [] as Exercise[],
-      filters: {} as any
+      filters: {} as any,
+      planes: [] as Plan[]
     }),
     actions: {
       async fetchUser(email: string, password: string): Promise<User | null> {
@@ -147,6 +156,59 @@ export interface  User {
   },
   setFilters(filters: any) {
     this.filters = filters;
+  },
+  async createExercise(exercise: Exercise) {
+    try {
+      if (!exercise.imagen) {
+      exercise.imagen = '../assets/usuario.png'; // Asignar una imagen por defecto
+    }
+    const response = await fetch('http://localhost:5008/Exercise', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(exercise)
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to create exercise: ${errorText}`);
+    }
+    const newExercise = await response.json() as Exercise;
+    this.ejercicios.push(newExercise); // Añade el nuevo ejercicio al estado
+  } catch (error) {
+    console.error('Failed to create exercise:', error);
+  }
+  },
+  async fetchPlanes() {
+    try {
+      const response = await fetch('http://localhost:5008/Plan'); // Ajusta la URL si es necesario
+      if (!response.ok) {
+        throw new Error('Failed to fetch plans');
+      }
+      const data = await response.json() as Plan[];
+      this.planes = data;
+    } catch (error) {
+      console.error("Failed to fetch plans:", error);
+    }
+  },
+  async updateUserPlan(plan: string) {
+    if (!this.user) return;
+    
+    try {
+      const response = await fetch(`http://localhost:5008/User/${this.user.userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ...this.user, plan })
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update user plan');
+      }
+      this.user = await response.json(); // Actualiza el usuario con el nuevo plan
+    } catch (error) {
+      console.error('Failed to update user plan:', error);
+    }
   }
   
     

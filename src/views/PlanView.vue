@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Login from "../components/LoginUser.vue"
+import PlanChange from "../components/PlanChange.vue"
 </script>
 
 <template>
-<Login></Login>
+<PlanChange></PlanChange>
 </template>
 
 <style scoped>
