@@ -30,13 +30,20 @@ export interface  User {
       descripcion: string;
       precio: number;
     }
+    export interface Amigo {
+      id?: number;
+      usuario: string;
+      amigos: string;
+    }
 
   export const useFunctionStore = defineStore('functionStore', {
     state: () => ({
       user: ref<User | null>(null),
+      users: [] as User[],
       ejercicios: [] as Exercise[],
       filters: {} as any,
-      planes: [] as Plan[]
+      planes: [] as Plan[],
+      amigos: [] as Amigo[]
     }),
     actions: {
       async fetchUser(email: string, password: string): Promise<User | null> {
@@ -209,8 +216,67 @@ export interface  User {
     } catch (error) {
       console.error('Failed to update user plan:', error);
     }
+  },
+  async fetchUsers() {
+    try {
+      const response = await fetch('http://localhost:5008/User');
+      if (!response.ok) {
+        throw new Error('Failed to fetch users');
+      }
+      this.users = await response.json();
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    }
+  },
+  async fetchAmigos() {
+    if (!this.user) return;
+    try {
+      const response = await fetch(`http://localhost:5008/Amigo?usuario=${this.user.email}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch amigos');
+      }
+      this.amigos = await response.json();
+    } catch (error) {
+      console.error("Failed to fetch amigos:", error);
+    }
+  },
+  async seguir(email: string) {
+    if (!this.user) return;
+    try {
+      const amigo: Amigo = { usuario: this.user.email, amigos: email };
+      const response = await fetch('http://localhost:5008/Amigo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(amigo),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to add amigo: ${errorText}`);
+      }
+      const newAmigo = await response.json();
+      this.amigos.push(newAmigo);
+    } catch (error) {
+      console.error("Failed to add amigo:", error);
+    }
+  },
+  async dejarDeSeguir(email: string) {
+    if (!this.user) return;
+    try {
+      const amigo = this.amigos.find(a => a.amigos === email && a.usuario === this.user!.email);
+      if (!amigo || !amigo.id) return;
+      const response = await fetch(`http://localhost:5008/Amigo/${amigo.id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete amigo');
+      }
+      this.amigos = this.amigos.filter(a => a.id !== amigo.id);
+    } catch (error) {
+      console.error("Failed to delete amigo:", error);
+    }
   }
-  
     
     
     }

@@ -40,7 +40,7 @@ function goBack() {
         <p class="titulo-texto">{{ ejercicio.nombre }}</p>
       </div>
       <div class="foto-container">
-        <img :src="ejercicio.img" class="foto" />
+        <img :src="'src/assets/ejes/' + ejercicio.imagen" class="foto" />
       </div>
       <div class="descripcion-container">
         <p class="titulo-descripcion">Atributos</p>
