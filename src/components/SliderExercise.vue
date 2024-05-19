@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useFunctionStore } from '../stores/FunctionStore';
 
 const router = useRouter();
 
@@ -37,7 +38,10 @@ import bosesion from '@/assets/basket/posesion.jpg';
 import cuadra from '@/assets/futbol/cuadra.jpg';
 import panuelo from '@/assets/basket/panuelo.jpg';
 
+const store = useFunctionStore();
+
 function goToInfoView() {
+  //store.setFilters({ deporte: 'Basket' });
   router.push({ name: 'exercises' });
 }
 
