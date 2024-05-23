@@ -31,7 +31,7 @@ export interface  User {
       precio: number;
     }
     export interface Amigo {
-      id?: number;
+      amigoId?: number;
       usuario: string;
       amigos: string;
     }
@@ -78,114 +78,70 @@ export interface  User {
       },
       async createUser(userData: { email: string; password: string; name: string; apellidos: string; frase: string }): Promise<User | null> {
         try {
-            const response = await fetch('http://localhost:5008/User', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
-            if (!response.ok) {
-                const errorText = await response.text();  // Usar .text() en caso de que no sea JSON
-                throw new Error(`Failed to create user: status ${response.status} - ${errorText}`);
-            }
-    
-            // Si la respuesta está vacía, no intentar analizarla como JSON
-            const text = await response.text();
-            try {
-                return text ? JSON.parse(text) : null;  // Sólo analizar como JSON si hay contenido
-            } catch (e) {
-                return null;  // Si el contenido no puede ser analizado, retornar nulo
-            }
-        } catch (error) {
-            console.error('Failed to create user:', error);
-            return null;
-        }
-    },
-    async updateUser(updatedUser: Partial<User>): Promise<boolean> {
-      if (!updatedUser.userId) {
-          console.error('User ID is missing, cannot update user');
-          return false;
-      }
-      try {
-          const response = await fetch(`http://localhost:5008/User/${updatedUser.userId}`, {
-              method: 'PUT',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(updatedUser)
+          // Verificar si el usuario ya existe
+          const exists = await this.checkUserExists(userData.email);
+          if (exists) {
+            throw new Error('El correo electrónico ya está registrado');
+          }
+          
+          const response = await fetch('http://localhost:5008/User', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
           });
           if (!response.ok) {
-              const errorText = await response.text();  // Usar .text() para manejar respuestas no-JSON
-              throw new Error(`Failed to update user: status ${response.status} - ${errorText}`);
+            const errorText = await response.text();  // Usar .text() en caso de que no sea JSON
+            throw new Error(`Failed to create user: status ${response.status} - ${errorText}`);
           }
   
           // Si la respuesta está vacía, no intentar analizarla como JSON
           const text = await response.text();
           try {
-              if (text) {
-                  const data = JSON.parse(text);  // Sólo analizar como JSON si hay contenido
-                  this.user = data;  // Actualiza el estado del usuario en el store
-                  return true;
-              } else {
-                  return true;  // Si no hay contenido, asumir que la actualización fue exitosa
-              }
+            return text ? JSON.parse(text) : null;  // Sólo analizar como JSON si hay contenido
           } catch (e) {
-              console.error('Unexpected response format:', e);
-              return false;  // Si el contenido no puede ser analizado, considerar fallido
+            return null;  // Si el contenido no puede ser analizado, retornar nulo
           }
-      } catch (error) {
+        } catch (error) {
+          console.error('Failed to create user:', error);
+          throw error;
+        }
+      }, 
+      async updateUser(updatedUser: Partial<User>): Promise<boolean> {
+        if (!updatedUser.userId) {
+          console.error('User ID is missing, cannot update user');
+          return false;
+        }
+        try {
+          const response = await fetch(`http://localhost:5008/User/${updatedUser.userId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedUser)
+          });
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to update user: status ${response.status} - ${errorText}`);
+          }
+  
+          // Intentar obtener el texto de la respuesta
+          const text = await response.text();
+          if (text) {
+            // Si hay contenido, analizarlo como JSON
+            const data = JSON.parse(text);
+            this.user = data;  // Actualiza el estado del usuario en el store
+          } else {
+            // Si no hay contenido, asumir que la actualización fue exitosa
+           // Object.assign(this.user, updatedUser);
+          }
+          return true;
+        } catch (error) {
           console.error('Failed to update user:', error);
           return false;
-      }
-  },
-  async fetchEjercicios() {
-    try {
-      const response = await fetch('http://localhost:5008/Exercise');
-      if (!response.ok) {
-        throw new Error('Failed to fetch exercises');
-      }
-      const data = await response.json() as Exercise[];
-      this.ejercicios = this.applyFilters(data);  // Aplicar filtros después de cargar los datos
-    } catch (error) {
-      console.error("Failed to fetch exercises:", error);
-    }
-  },
-  applyFilters(data: Exercise[]) {
-    return data.filter(exercise => 
-      (!this.filters.intensidad || exercise.intensidad === this.filters.intensidad) &&
-      (!this.filters.edad || exercise.edad === this.filters.edad) &&
-      (!this.filters.deporte || exercise.deporte === this.filters.deporte) &&
-      (!this.filters.objetivo || exercise.objetivo === this.filters.objetivo) &&
-      (!this.filters.personas || exercise.personas === this.filters.personas) &&
-      (!this.filters.dificultad || exercise.dificultad === this.filters.dificultad)
-    );
-  },
-  setFilters(filters: any) {
-    this.filters = filters;
-  },
-  async createExercise(exercise: Exercise) {
-    try {
-      if (!exercise.imagen) {
-      exercise.imagen = '../assets/usuario.png'; // Asignar una imagen por defecto
-    }
-    const response = await fetch('http://localhost:5008/Exercise', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+        }
       },
-      body: JSON.stringify(exercise)
-    });
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to create exercise: ${errorText}`);
-    }
-    const newExercise = await response.json() as Exercise;
-    this.ejercicios.push(newExercise); // Añade el nuevo ejercicio al estado
-  } catch (error) {
-    console.error('Failed to create exercise:', error);
-  }
-  },
   async fetchPlanes() {
     try {
       const response = await fetch('http://localhost:5008/Plan'); // Ajusta la URL si es necesario
@@ -225,7 +181,7 @@ export interface  User {
       }
       this.users = await response.json();
     } catch (error) {
-      console.error("Failed to fetch users:", error);
+      console.error('Failed to fetch users:', error);
     }
   },
   async fetchAmigos() {
@@ -237,7 +193,7 @@ export interface  User {
       }
       this.amigos = await response.json();
     } catch (error) {
-      console.error("Failed to fetch amigos:", error);
+      console.error('Failed to fetch amigos:', error);
     }
   },
   async seguir(email: string) {
@@ -258,25 +214,28 @@ export interface  User {
       const newAmigo = await response.json();
       this.amigos.push(newAmigo);
     } catch (error) {
-      console.error("Failed to add amigo:", error);
+      console.error('Failed to add amigo:', error);
     }
   },
   async dejarDeSeguir(email: string) {
-    if (!this.user) return;
-    try {
-      const amigo = this.amigos.find(a => a.amigos === email && a.usuario === this.user!.email);
-      if (!amigo || !amigo.id) return;
-      const response = await fetch(`http://localhost:5008/Amigo/${amigo.id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete amigo');
+      if (!this.user) return;
+      try {
+        const amigo = this.amigos.find(a => a.amigos === email && a.usuario === this.user!.email);
+        if (!amigo || !amigo.amigoId) {
+          throw new Error('Amigo no encontrado o ID no definido');
+        }
+        const response = await fetch(`http://localhost:5008/Amigo/${amigo.amigoId}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Failed to delete amigo: ${errorText}`);
+        }
+        this.amigos = this.amigos.filter(a => a.amigoId !== amigo.amigoId);
+      } catch (error) {
+        console.error('Failed to delete amigo:', error);
       }
-      this.amigos = this.amigos.filter(a => a.id !== amigo.id);
-    } catch (error) {
-      console.error("Failed to delete amigo:", error);
-    }
-  }
+    },
     
     
     }
