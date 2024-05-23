@@ -1,43 +1,19 @@
-<script setup lang="ts">
-import { onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useFunctionStore } from '../stores/FunctionStore';
-
-const router = useRouter();
-const store = useFunctionStore();
-
-// Asegúrate de cargar los ejercicios si aún no están cargados
-onMounted(() => {
-  if (!store.ejercicios.length) {
-    store.fetchEjercicios();
-  }
-});
-
-
-const entrenamientos = computed(() => store.ejercicios);
-
-function goToExerciseDetails(exerciseId: number) {
-  router.push({ name: 'info', params: { exerciseId } });
-}
-function goToFilter() {
-  router.push({ name: 'filter' });
-}
-</script>
-
-
 <template>
   <div class="container-general">
     <div class="contenedor">
-      <button class="button" @click="goToFilter();">
-        <span class="button-text" >Cambiar filtros</span>
+      <button class="button" @click="goToFilter">
+        <span class="button-text">Cambiar filtros</span>
       </button>
-      <div v-for="entrenamiento in entrenamientos" :key="entrenamiento.exerciseId" class="tarjeta">
+      <div v-for="entrenamiento in filteredEjercicios" :key="entrenamiento.exerciseId" class="tarjeta">
         <div class="info-con-foto">
           <img :src="'src/assets/ejes/' + entrenamiento.imagen" class="foto" />
           <div class="info-tarjeta">
             <p class="nombre">{{ entrenamiento.nombre }}</p>
             <p class="descripcion">{{ entrenamiento.descripcion }}</p>
-            <button class="button-ver-mas" @click="goToExerciseDetails(Number(entrenamiento.exerciseId));">
+            <button
+              class="button-ver-mas"
+              @click="entrenamiento.exerciseId !== undefined && goToExerciseDetails(entrenamiento.exerciseId)"
+            >
               <span class="button-ver-mas-text">Ver más</span>
             </button>
           </div>
@@ -46,6 +22,33 @@ function goToFilter() {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useExerciseStore } from '../stores/ExerciseStore';
+
+const router = useRouter();
+const store = useExerciseStore();
+
+// Asegúrate de cargar los ejercicios si aún no están cargados
+onMounted(() => {
+  if (!store.ejercicios.length) {
+    store.fetchEjercicios();
+  }
+});
+
+const filteredEjercicios = computed(() => store.filteredEjercicios);
+
+function goToExerciseDetails(exerciseId: number) {
+  router.push({ name: 'info', params: { exerciseId } });
+}
+
+function goToFilter() {
+  router.push({ name: 'filter' });
+}
+</script>
+
 
   
 <style scoped>

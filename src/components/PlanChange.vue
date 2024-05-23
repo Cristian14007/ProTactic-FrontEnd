@@ -1,7 +1,7 @@
 <template>
     <div class="container-general">
       <button class="back-arrow" @click="goBack">
-        <img src="../assets/backArrow.png" alt="Back Arrow" />
+        <img src="../assets/backArrow.png" alt="Back Arrow" class="back-arrow-image"/>
       </button>
   
       <div class="container">
@@ -64,7 +64,7 @@
   }
   
   function goBack() {
-    router.back();
+    router.push({ name: 'profile' });
   }
   </script>
   
@@ -77,12 +77,17 @@
     align-items: center;
   }
   .back-arrow {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    left: 5%;
-    top: 3%;
-  }
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0; /* Elimina el padding del botón */
+}
+
+.back-arrow-image {
+  width: 30px; /* Ajusta el tamaño de la imagen según sea necesario */
+  height: auto;
+  display: block; /* Asegura que la imagen no tenga margen extra */
+}
   .container {
     width: 80%;
     margin-top: 20%;

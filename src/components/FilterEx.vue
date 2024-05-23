@@ -4,19 +4,18 @@
       <option disabled value="">Seleccione Deporte</option>
       <option>Futbol</option>
       <option>Basket</option>
-      <option>Extreme</option>
     </select>
     <select v-model="selectedDificultad">
       <option disabled value="">Seleccione Dificultad</option>
       <option>Low</option>
       <option>Medium</option>
-      <option>High</option>
+      <option>Hard</option>
     </select>
     <select v-model="selectedIntensity">
       <option disabled value="">Seleccione Intensidad</option>
       <option>Low</option>
       <option>Medium</option>
-      <option>High</option>
+      <option>Hard</option>
     </select>
     <select v-model="selectedPersonas">
       <option disabled value="">Seleccione Personas</option>
@@ -37,7 +36,6 @@
       <option>Estiramiento</option>
     </select>
 
-
     <button @click="applyFilters">Aplicar Filtros</button>
   </div>
 </template>
@@ -45,7 +43,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useFunctionStore } from '../stores/FunctionStore';
+import { useExerciseStore } from '../stores/ExerciseStore';
 
 const selectedIntensity = ref('');
 const selectedAge = ref('');
@@ -54,12 +52,9 @@ const selectedDificultad = ref('');
 const selectedObjetivo = ref('');
 const selectedPersonas = ref('');
 const router = useRouter();
-const store = useFunctionStore();
+const store = useExerciseStore();
 
 function applyFilters() {
-  console.log(store);  // Debería mostrar el objeto del store con sus métodos disponibles.
-console.log(store.setFilters);  // Esto debería mostrar la función, no undefined.
-
   store.setFilters({
     intensidad: selectedIntensity.value,
     edad: parseInt(selectedAge.value, 10),
@@ -71,6 +66,7 @@ console.log(store.setFilters);  // Esto debería mostrar la función, no undefin
   router.push({ name: 'exercises' });
 }
 </script>
+
 
 <style scoped>
 .filter-container {
