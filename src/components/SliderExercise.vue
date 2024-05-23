@@ -5,23 +5,21 @@
         <p class="titulo-texto">{{ slider.title }}</p>
       </div>
       <div class="imagen-carousel">
-        <figure>
+        <figure class="image-wrapper">
           <img v-for="(image, i) in slider.images" :key="i" :src="image"
                class="foto" v-show="i === currentSlide[index]" 
                :alt="`Slider image ${i + 1}`" 
-               @click="goToInfoView" />
+               @click="goToInfoView(slider.title)" />
         </figure>
-        <button @click="prevSlide(index)">Prev</button>
-        <button @click="nextSlide(index)">Next</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useFunctionStore } from '../stores/FunctionStore';
+import { useExerciseStore } from '../stores/ExerciseStore';
 
 const router = useRouter();
 
@@ -38,10 +36,21 @@ import bosesion from '@/assets/basket/posesion.jpg';
 import cuadra from '@/assets/futbol/cuadra.jpg';
 import panuelo from '@/assets/basket/panuelo.jpg';
 
-const store = useFunctionStore();
+const store = useExerciseStore();
 
-function goToInfoView() {
-  //store.setFilters({ deporte: 'Basket' });
+function goToInfoView(sliderTitle: string) {
+  let filters = {};
+  if (sliderTitle === 'TOP FUTBOL') {
+    filters = { deporte: 'Futbol' };
+  } else if (sliderTitle === 'TOP BALONCESTO') {
+    filters = { deporte: 'Basket' };
+  } else if (sliderTitle === 'LOS MAS DIFICILES') {
+    filters = { intensidad: 'Hard' }; 
+  } else if (sliderTitle === 'PARA CALENTAR') {
+    filters = { objetivo: 'Calentamiento' };
+  }
+  
+  store.setFilters(filters);
   router.push({ name: 'exercises' });
 }
 
@@ -50,7 +59,6 @@ type Slider = {
   images: string[];
 };
 
-// Supongamos que tienes imágenes locales o URLs directas.
 const sliders: Slider[] = [
   {
     title: 'TOP FUTBOL',
@@ -71,6 +79,7 @@ const sliders: Slider[] = [
 ];
 
 const currentSlide = reactive<number[]>(sliders.map(() => 0));
+const intervals = reactive<number[]>(sliders.map(() => 0));
 
 const nextSlide = (sliderIndex: number): void => {
   if (currentSlide[sliderIndex] < sliders[sliderIndex].images.length - 1) {
@@ -80,13 +89,21 @@ const nextSlide = (sliderIndex: number): void => {
   }
 };
 
-const prevSlide = (sliderIndex: number): void => {
-  if (currentSlide[sliderIndex] > 0) {
-    currentSlide[sliderIndex]--;
-  } else {
-    currentSlide[sliderIndex] = sliders[sliderIndex].images.length - 1;  // Volver al final
-  }
+const startAutoSlide = (sliderIndex: number): number => {
+  return setInterval(() => {
+    nextSlide(sliderIndex);
+  }, 3000); // Cambia de imagen cada 3 segundos
 };
+
+onMounted(() => {
+  sliders.forEach((_, index) => {
+    intervals[index] = startAutoSlide(index);
+  });
+});
+
+onUnmounted(() => {
+  intervals.forEach(interval => clearInterval(interval));
+});
 </script>
 
 <style scoped>
@@ -105,7 +122,6 @@ const prevSlide = (sliderIndex: number): void => {
 .titulo-container {
   text-align: center; /* Centrar el título */
   padding: 8px 0; /* Padding para espacio vertical */
- 
   color: black;
 }
 
@@ -122,39 +138,22 @@ const prevSlide = (sliderIndex: number): void => {
   flex-direction: column;
 }
 
+.image-wrapper {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+  background-color: black; /* Fondo negro para el contenedor de imágenes */
+  position: relative;
+  border: 4px solid black; /* Añadir borde negro al contenedor */
+}
+
 .foto {
-  width: 100%; /* Las imágenes ocupan el 100% del ancho del contenedor */
-  height: auto; /* Altura automática para mantener la proporción */
-  display: block; /* Asegurar que no hay margen extra debajo */
-}
-
-button {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegurarse de que la imagen cubra todo el contenedor */
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #FFF;
-  border: none;
-  cursor: pointer;
-  z-index: 10; /* Asegurarse de que estén por encima de la imagen */
-}
-
-button:hover {
-  background-color: #ccc;
-}
-
-button:first-of-type {
-  left: 10px;
-}
-
-button:last-of-type {
-  right: 10px;
-}
-
-@media (max-width: 768px) {
-  .titulo-texto {
-    font-size: 18px; /* Más pequeño en dispositivos móviles */
-  }
+  top: 0;
+  left: 0;
+  border: 2px solid black; /* Añadir borde negro a la imagen */
 }
 </style>

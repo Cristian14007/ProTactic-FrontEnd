@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFunctionStore } from '../stores/FunctionStore';
+import { useExerciseStore } from '../stores/ExerciseStore';
 
 const route = useRoute();
 import { useRouter } from 'vue-router';
@@ -9,7 +9,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 
-const store = useFunctionStore();
+const store = useExerciseStore();
 
 // Suponiendo que ya has cargado los ejercicios en algún momento, por ejemplo en el componente padre o en el router guard.
 const ejercicio = computed(() => {

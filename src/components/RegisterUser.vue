@@ -10,17 +10,16 @@ const password = ref('');
 const frase = ref('');
 const errorMessage = ref('');
 
-    const nameError = ref(false);
-    const apellido1Error = ref(false);
+const nameError = ref(false);
+const apellido1Error = ref(false);
 
-    const emailError = ref(false);
-    const emailErrorExistente = ref(false);
-    const passwordError = ref(false);
+const emailError = ref(false);
+const emailErrorExistente = ref(false);
+const passwordError = ref(false);
 
-
-    const navigateToLogin = () => {
-        router.push({ name: 'login' });
-    };
+const navigateToLogin = () => {
+    router.push({ name: 'login' });
+};
 
 const router = useRouter();
 const store = useFunctionStore();
@@ -41,13 +40,14 @@ async function registerUser() {
     } catch (error) {
         if (error instanceof Error) {
             errorMessage.value = error.message;
+            if (error.message.includes('El correo electrónico ya está registrado')) {
+                emailErrorExistente.value = true;
+            }
         } else {
             errorMessage.value = 'An unexpected error occurred';
         }
     }
 }
-
-
 </script>
 
 <template>
