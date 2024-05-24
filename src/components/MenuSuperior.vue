@@ -1,11 +1,11 @@
 <template>
    <div class="contenedor">
     <div class="menu-superior">
-      <button @click="abrirMenu">
+      <button class="boton-menu-inferior" @click="abrirMenu">
         <img src="../assets/tres-puntos.png" class="imagen-menu-superior" />
       </button>
       <span class="texto-menu-superior">PRO-TACTIC</span>
-      <button @click="handlePress">
+      <button class="boton-menu-inferior" @click="handlePress">
         <img src="../assets/usuario.png" class="imagen-menu-superior" />
       </button>
     </div>
@@ -56,5 +56,14 @@ function handlePress() {
     font-weight: bold;
     color: #FFF;
   }
+  .boton-menu-inferior {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
   </style>
   

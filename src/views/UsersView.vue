@@ -1,11 +1,11 @@
 <template>
-    <div class="contenedor">
+   <div class="contenedor">
       <div class="menu-superior">
-        <button @click="toggleMenu">
+        <button class="boton-menu-inferior" @click="toggleMenu">
           <img src="../assets/tres-puntos.png" class="imagen-menu-superior" />
         </button>
         <h1 class="texto-menu-superior">PRO-TACTIC</h1>
-        <button @click="ahuevo">
+        <button class="boton-menu-inferior" @click="ahuevo">
           <img src="../assets/usuario.png" class="imagen-menu-superior" />
         </button>
       </div>
@@ -92,5 +92,14 @@
     flex: 1;
     margin-bottom: 10%;
   }
+  .boton-menu-inferior {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
   </style>
   

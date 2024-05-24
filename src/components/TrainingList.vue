@@ -49,14 +49,13 @@ function goToFilter() {
 }
 </script>
 
-
-  
 <style scoped>
 .container-general {
   flex: 1;
   width: 100%;
   align-self: center;
 }
+
 .contenedor {
   flex: 1;
   width: 95%;
@@ -64,46 +63,51 @@ function goToFilter() {
   align-self: center;
   margin-bottom: 85px;
 }
+
 .tarjeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 10px;
   height: 170px;
   border-radius: 8px;
   background-color: black;
+  padding: 10px;
 }
+
 .info-con-foto {
   display: flex;
-  flex-direction: row;
-  margin: 3% 3% 4% 3%;
-  width: 94%;
-  height: 84%;
+  width: 100%;
+  height: 100%;
 }
+
 .foto {
-  width: 50%;
+  width: 45%;
   height: 100%;
   border-radius: 5px;
 }
+
 .info-tarjeta {
-  align-items: center;
-  width: 50%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 55%;
+  padding: 10px;
 }
+
 .nombre {
-  width: 95%;
-  margin-left: 5%;
-  height: 15%;
-  text-align: center;
   color: white;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 18px;
 }
+
 .descripcion {
-  width: 95%;
-  margin-left: 5%;
-  height: 55%;
-  text-align: auto;
-  margin-top: 2%;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
 }
 .button {
   width: 100%;
@@ -121,17 +125,16 @@ function goToFilter() {
   color: #000000;
 }
 .button-ver-mas {
-  width: 95%;
-  margin-left: 5%;
-  height: 20%;
-  text-align: center;
+  width: fit-content;
+  height: fit-content;
   background-color: #FAC710;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5%;
+  padding: 10px 20px;
 }
+
 .button-ver-mas-text {
   font-size: 15px;
   font-weight: bold;

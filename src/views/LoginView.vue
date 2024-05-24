@@ -9,4 +9,4 @@ import Login from "../components/LoginUser.vue"
 
 <style scoped>
 
-</style>../components/LoginUser.vue
+</style>

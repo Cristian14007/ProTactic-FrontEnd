@@ -1,5 +1,8 @@
 <template>
   <div class="filter-container">
+    <div class="titulo-container">
+        <p class="titulo-texto">Buscar Ejercicios</p>
+      </div>
     <select v-model="selectedDeporte">
       <option disabled value="">Seleccione Deporte</option>
       <option>Futbol</option>
@@ -35,8 +38,10 @@
       <option>Fisico</option>
       <option>Estiramiento</option>
     </select>
-
-    <button @click="applyFilters">Aplicar Filtros</button>
+    <button class="button" @click="applyFilters">
+        <span class="button-text">Aplicar Filtros</span>
+      </button>
+  
   </div>
 </template>
 
@@ -74,5 +79,31 @@ function applyFilters() {
   flex-direction: column;
   gap: 20px;
   margin: 20px;
+}
+.titulo-container {
+  text-align: center; /* Centrar el título */
+  padding: 8px 0; /* Padding para espacio vertical */
+  color: black;
+}
+
+.titulo-texto {
+  font-size: 24px; /* Tamaño más adecuado para el título */
+  font-weight: bold;
+  text-shadow: 1px 1px 3px #fac710;
+}
+.button {
+  width: 100%;
+  height: 50px;
+  background-color: #FAC710;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
 }
 </style>

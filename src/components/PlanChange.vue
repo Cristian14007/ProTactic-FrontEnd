@@ -1,10 +1,10 @@
 <template>
     <div class="container-general">
-      <button class="back-arrow" @click="goBack">
+      
+      <div class="container">
+        <button class="back-arrow" @click="goBack">
         <img src="../assets/backArrow.png" alt="Back Arrow" class="back-arrow-image"/>
       </button>
-  
-      <div class="container">
         <div v-for="(plan, index) in planes" :key="index" class="planes-tarjeta" @click="selectPlan(plan.planes)">
           <div :class="[plan.planes === selectedPlan ? 'valor-seleccionado' : 'valor-normal']">
             <p class="titulo">Plan {{ plan.planes }}</p>
