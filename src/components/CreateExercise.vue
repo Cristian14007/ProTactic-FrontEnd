@@ -1,5 +1,8 @@
 <template>
   <div v-if="user && user.plan === 'Pro'" class="create-exercise-container">
+    <button class="back-arrow" @click="goBack">
+      <img src="../assets/backArrow.png" alt="Back Arrow" class="back-arrow-image" />
+    </button>
     <h2>Crear Nuevo Ejercicio</h2>
     
     <input v-model="nombre" type="text" placeholder="Nombre del ejercicio" />
@@ -223,5 +226,16 @@ input, select {
   text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+.back-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0; /* Elimina el padding del botón */
+}
 
+.back-arrow-image {
+  width: 30px; /* Ajusta el tamaño de la imagen según sea necesario */
+  height: auto;
+  display: block; /* Asegura que la imagen no tenga margen extra */
+}
 </style>

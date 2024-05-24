@@ -2,32 +2,27 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useExerciseStore } from '../stores/ExerciseStore';
-
-const route = useRoute();
 import { useRouter } from 'vue-router';
 
+const route = useRoute();
 const router = useRouter();
-
-
 const store = useExerciseStore();
 
-// Suponiendo que ya has cargado los ejercicios en algún momento, por ejemplo en el componente padre o en el router guard.
 const ejercicio = computed(() => {
-  // Aseguramos que el ID es un string y lo convertimos a número
   const exerciseId = Array.isArray(route.params.exerciseId)
-    ? route.params.exerciseId[0]  // Tomamos el primer elemento si es un arreglo
-    : route.params.exerciseId;    // Usamos el valor directamente si es un string
-
+    ? route.params.exerciseId[0]
+    : route.params.exerciseId;
   return store.ejercicios.find(e => e.exerciseId === parseInt(exerciseId));
 });
 
 function getClass(dificultadOrIntensidad: string) {
   return {
-    'baja': 'text-green-500',
-    'media': 'text-yellow-500',
-    'alta': 'text-red-500'
-  }[dificultadOrIntensidad] || 'text-gray-500';
+    'Low': 'text-green',
+    'Medium': 'text-yellow',
+    'Hard': 'text-red'
+  }[dificultadOrIntensidad] || 'text-gray';
 }
+
 function goBack() {
   router.push({ name: 'exercises' });
 }
@@ -42,33 +37,26 @@ function goBack() {
       <div class="foto-container">
         <img :src="'src/assets/ejes/' + ejercicio.imagen" class="foto" />
       </div>
-      <div class="descripcion-container">
-        <p class="titulo-descripcion">Atributos</p>
-        <div class="caracteristicas-container">
-          <div class="caracteristicas-container-individual">
-            <div class="prueba">
-              <p class="prueba2">Dificultad</p>
-            </div>
-            <p :class="getClass(ejercicio.dificultad)">{{ ejercicio.dificultad }}</p>
-          </div>
-          <div class="caracteristicas-container-individual">
-            <div class="prueba">
-              <p class="prueba2">Intensidad</p>
-            </div>
-            <p :class="getClass(ejercicio.intensidad)">{{ ejercicio.intensidad }}</p>
-          </div>
-          <div class="caracteristicas-container-individual">
-            <div class="prueba">
-              <p class="prueba2">Edad mínima:</p>
-            </div>
-            <p class="texto-caracteristicas">{{ ejercicio.edad }}</p>
-          </div>
+      <div class="caracteristicas-container">
+        <div class="caracteristica">
+          <p class="caracteristica-label">Dificultad</p>
+          <p :class="getClass(ejercicio.dificultad)" class="caracteristica-valor">{{ ejercicio.dificultad }}</p>
         </div>
+        <div class="caracteristica">
+          <p class="caracteristica-label">Intensidad</p>
+          <p :class="getClass(ejercicio.intensidad)" class="caracteristica-valor">{{ ejercicio.intensidad }}</p>
+        </div>
+        <div class="caracteristica">
+          <p class="caracteristica-label">Edad Recomendada</p>
+          <p class="caracteristica-valor">{{ ejercicio.edad }}</p>
+        </div>
+      </div>
+      <div class="descripcion-container">
         <p class="titulo-descripcion">Descripción</p>
         <p class="descripcion-texto">{{ ejercicio.descripcion }}</p>
       </div>
-      <button class="button">
-        <span class="button-text"  @click="goBack">VOLVER</span>
+      <button class="button" @click="goBack">
+        <span class="button-text">VOLVER</span>
       </button>
     </div>
   </div>
@@ -79,85 +67,104 @@ function goBack() {
 
 <style scoped>
 .container-general {
-  flex: 1;
-}
-.contenedor {
-  flex: 1;
-  width: 90%;
-  margin-bottom: 110px;
-  align-self: center;
-}
-.titulo-container {
-  align-items: center;
-  margin-bottom: 8px;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
-.titulo-texto {
-  font-size: 40px;
+
+.contenedor {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 110px;
   text-align: center;
+}
+
+.titulo-container {
+  margin-bottom: 20px;
+}
+
+.titulo-texto {
+  font-size: 30px;
   font-weight: bold;
   text-shadow: 2px 2px 5px #FAC710;
 }
+
 .foto-container {
-  align-items: center;
+  display: flex;
   justify-content: center;
-  border-radius: 50px;
+  margin-bottom: 20px;
 }
+
 .foto {
-  height: 230px;
   width: 100%;
+  max-width: 400px;
   border-radius: 15px;
 }
-.descripcion-container {
-  flex: 1;
-}
-.titulo-descripcion {
-  font-weight: bold;
-  font-size: 30px;
-  margin-vertical: 10px;
-}
+
 .caracteristicas-container {
-  flex: 1;
-  flex-direction: row;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
 }
-.caracteristicas-container-individual {
-  flex: 1;
-  border-radius: 50px;
-  align-items: center;
-  justify-content: center;
-}
-.prueba {
-  height: 50px;
-  text-align: center;
-  justify-content: center;
-}
-.prueba2 {
-  font-weight: 600;
-  font-size: 18px;
+
+.caracteristica {
   text-align: center;
 }
-.texto-caracteristicas {
-  font-size: 25px;
+
+.caracteristica-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.caracteristica-valor {
+  font-size: 16px;
+}
+
+.text-green {
   color: green;
 }
-.descripcion-texto {
-  text-align: justify;
-  font-size: 15px;
-  padding-horizontal: 20px;
+
+.text-yellow {
+  color: yellow;
 }
+
+.text-red {
+  color: red;
+}
+
+.text-gray {
+  color: gray;
+}
+
+.descripcion-container {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.titulo-descripcion {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.descripcion-texto {
+  font-size: 16px;
+  text-align: justify;
+}
+
 .button {
   width: 100%;
   height: 50px;
-  position: relative;
-  bottom: 0;
-  margin-top: 3%;
   background-color: #FAC710;
   border-radius: 5px;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .button-text {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: #000000;
 }
