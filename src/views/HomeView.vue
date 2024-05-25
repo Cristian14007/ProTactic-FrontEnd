@@ -13,7 +13,12 @@
   
       <div class="contenido">
         <SliderComponent />
+        <div class="home">
+    <h1>Gráfico de Deportes</h1>
+    <ChartComponent />
+  </div>
       </div>
+      
   
       <!-- Overlay and Side Menu -->
       <div v-if="menuVisible" class="overlay" @click="toggleMenu">
@@ -30,6 +35,7 @@
   import SliderComponent from '../components/SliderExercise.vue';
   import MenuLateral from '../components/MenuLateral.vue';
   import MenuInferior from '../components/MenuInferior.vue';
+  import ChartComponent from '../components/ChartCompo.vue';
   
   const router = useRouter();
   const menuVisible = ref(false);
@@ -102,4 +108,4 @@
   cursor: pointer;
 }
   </style>
-  
+  ../components/ChartCompo.vue
