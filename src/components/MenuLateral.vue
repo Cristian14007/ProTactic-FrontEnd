@@ -32,8 +32,10 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { useExerciseStore } from '../stores/ExerciseStore';
 
 const router = useRouter();
+const store = useExerciseStore();
 
 function logout() {
   localStorage.removeItem('usuario');  // Usando localStorage en lugar de AsyncStorage
@@ -42,10 +44,12 @@ function logout() {
 }
 
 const navigateTo = () => {
-  router.push({ name: 'filter' });
+  store.setFilters({ deporte: 'Futbol' });
+  router.push({ name: 'exercises' });
 };
 const navigateTo1 = () => {
-  router.push({ name: 'filter' });
+  store.setFilters({ deporte: 'Basket' });
+  router.push({ name: 'exercises' });
 };
 const navigateTo2 = () => {
   router.push({ name: 'plan' });
