@@ -10,6 +10,7 @@ import HomeView from "../views/HomeView.vue"
 import ProfileView from "../views/ProfileView.vue"
 import RegisterView from "../views/RegisterView.vue"
 import UsersView from "../views/UsersView.vue"
+import AdminView from "../views/AdminView.vue"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
@@ -67,6 +68,11 @@ const router = createRouter({
                           path: '/users',
                           name: 'users',
                           component: UsersView
+                        },
+                        {
+                          path: '/admin',
+                          name: 'admin',
+                          component: AdminView
                         }
        
     ]
