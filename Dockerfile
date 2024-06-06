@@ -16,6 +16,8 @@ RUN npm install -D sass
 
 RUN npm install swiper vue-awesome-swiper --save
 
+RUN npm install chart.js vue-chartjs --save
+
 # Copiar archivos del proyecto
 COPY . .
 

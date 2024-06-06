@@ -7,4 +7,4 @@ import PlanChange from "../components/PlanChange.vue"
 </template>
 
 <style scoped>
-</style>../components/LoginUser.vue
+</style>

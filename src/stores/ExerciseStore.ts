@@ -14,6 +14,17 @@ export interface Exercise {
   objetivo: string;
   material: string;
 }
+
+export interface UsageData {
+  month: string;
+  futbol: number;
+  basket: number;
+  basico: number;
+  medium: number;
+  pro: number;
+  clientes: number;
+}
+
 function applyFilters(data: Exercise[], filters: any): Exercise[] {
     return data.filter(exercise =>
       (!filters.intensidad || exercise.intensidad === filters.intensidad) &&
@@ -29,6 +40,7 @@ export const useExerciseStore = defineStore('exerciseStore', {
     state: () => ({
         ejercicios: [] as Exercise[],
         filters: {} as any,
+        usageData: [] as UsageData[]
       }),
       actions: {
         async fetchEjercicios() {
@@ -69,6 +81,17 @@ export const useExerciseStore = defineStore('exerciseStore', {
               console.error('Failed to create exercise:', error);
             }
           },
+          async fetchUsageData() {
+            try {
+              const response = await fetch('http://localhost:5008/Usage');
+              if (!response.ok) {
+                throw new Error('Failed to fetch usage data');
+              }
+              this.usageData = await response.json();
+            } catch (error) {
+              console.error('Failed to fetch usage data:', error);
+            }
+          }
       },
       getters: {
         filteredEjercicios(state): Exercise[] {

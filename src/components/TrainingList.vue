@@ -4,7 +4,10 @@
       <button class="button" @click="goToFilter">
         <span class="button-text">Cambiar filtros</span>
       </button>
-      <div v-for="entrenamiento in filteredEjercicios" :key="entrenamiento.exerciseId" class="tarjeta">
+      <button class="button" @click="toggleSortOrder">
+        <span class="button-text">Ordenar por deportes</span>
+      </button>
+      <div v-for="entrenamiento in sortedEjercicios" :key="entrenamiento.exerciseId" class="tarjeta">
         <div class="info-con-foto">
           <img :src="'src/assets/ejes/' + entrenamiento.imagen" class="foto" />
           <div class="info-tarjeta">
@@ -24,9 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { ref,onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useExerciseStore } from '../stores/ExerciseStore';
+const sortOrder = ref(true); // true: Futbol primero, false: Baloncesto primero
 
 const router = useRouter();
 const store = useExerciseStore();
@@ -47,10 +51,21 @@ function goToExerciseDetails(exerciseId: number) {
 function goToFilter() {
   router.push({ name: 'filter' });
 }
+const sortedEjercicios = computed(() => {
+  const sorted = [...filteredEjercicios.value];
+  if (sortOrder.value) {
+    sorted.sort((a, b) => a.deporte.localeCompare(b.deporte));
+  } else {
+    sorted.sort((a, b) => b.deporte.localeCompare(a.deporte));
+  }
+  return sorted;
+});
+
+function toggleSortOrder() {
+  sortOrder.value = !sortOrder.value;
+}
 </script>
 
-
-  
 <style scoped>
 .container-general {
   flex: 1;
@@ -69,41 +84,52 @@ function goToFilter() {
   height: 170px;
   border-radius: 8px;
   background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .info-con-foto {
   display: flex;
   flex-direction: row;
-  margin: 3% 3% 4% 3%;
-  width: 94%;
-  height: 84%;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
 }
 .foto {
   width: 50%;
   height: 100%;
   border-radius: 5px;
+  object-fit: cover;
 }
 .info-tarjeta {
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 50%;
   height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .nombre {
-  width: 95%;
-  margin-left: 5%;
-  height: 15%;
+  width: 100%;
   text-align: center;
   color: white;
   font-weight: bold;
   font-size: 17px;
 }
 .descripcion {
-  width: 95%;
-  margin-left: 5%;
-  height: 55%;
-  text-align: auto;
-  margin-top: 2%;
+  width: 100%;
   color: white;
   font-size: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  max-height: 3em; /* 2 lines * 1.5 line-height */
 }
 .button {
   width: 100%;
@@ -121,16 +147,14 @@ function goToFilter() {
   color: #000000;
 }
 .button-ver-mas {
-  width: 95%;
-  margin-left: 5%;
-  height: 20%;
+  width: 100%;
+  height: 40px;
   text-align: center;
   background-color: #FAC710;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5%;
 }
 .button-ver-mas-text {
   font-size: 15px;

@@ -1,11 +1,11 @@
 <template>
     <div class="contenedor">
       <div class="menu-superior">
-        <button @click="toggleMenu">
+        <button class="boton-menu-inferior" @click="toggleMenu">
           <img src="../assets/tres-puntos.png" class="imagen-menu-superior" />
         </button>
-        <h1 class="texto-menu-superior">PRO-TACTIC</h1>
-        <button @click="ahuevo">
+        <h1 class="texto-menu-superior" @click="ahuevo2">PRO-TACTIC</h1>
+        <button class="boton-menu-inferior" @click="ahuevo">
           <img src="../assets/usuario.png" class="imagen-menu-superior" />
         </button>
       </div>
@@ -13,7 +13,10 @@
   
       <div class="contenido">
         <SliderComponent />
+        <div class="home">
+  </div>
       </div>
+      
   
       <!-- Overlay and Side Menu -->
       <div v-if="menuVisible" class="overlay" @click="toggleMenu">
@@ -30,9 +33,11 @@
   import SliderComponent from '../components/SliderExercise.vue';
   import MenuLateral from '../components/MenuLateral.vue';
   import MenuInferior from '../components/MenuInferior.vue';
+  import { useFunctionStore } from '../stores/FunctionStore';
   
   const router = useRouter();
   const menuVisible = ref(false);
+  const store = useFunctionStore();
   
   function toggleMenu() {
     menuVisible.value = !menuVisible.value;
@@ -41,6 +46,12 @@
   function ahuevo() {
     router.push({ name: 'profile' });
   }
+  function ahuevo2() {
+  const userEmail = store.user?.email;
+  if (userEmail === 'admin@gmail.com') {
+    router.push({ name: 'admin' });
+  } 
+}
   </script>
   
   <style scoped>
@@ -92,5 +103,14 @@
     flex: 1;
     margin-bottom: 10%;
   }
+  .boton-menu-inferior {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
   </style>
-  
+  ../components/ChartCompo.vue

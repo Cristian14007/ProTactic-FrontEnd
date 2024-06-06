@@ -3,45 +3,47 @@
     <button class="back-arrow" @click="goBack">
       <img src="../assets/backArrow.png" alt="Back Arrow" class="back-arrow-image" />
     </button>
-    <div style="align-items: center;">
-      <img src="../assets/usuario.png" class="image" />
-    </div>
-    <div v-if="user">
-      <div class="linea-separadora"></div>
-      <div class="info-usuario-general">
-        <div class="info-usuario" v-for="field in fields" :key="field.key">
-          <template v-if="field.key !== 'plan'">
-            <button @click="edit(field.key)">
-              <img src="../assets/edit.png" class="image-edit" />
-            </button>
-            <span class="info-usuario-texto-cabecera">{{ field.label }}:</span>
-            <span class="info-usuario-texto" v-if="editField !== field.key">{{ user[field.key] }}</span>
-            <input v-if="editField === field.key" v-model="editableValue" class="edit-input" />
-            <button v-if="editField === field.key" @click="save">Guardar</button>
-            <button v-if="editField === field.key" @click="cancel">Cancelar</button>
-          </template>
-          <template v-else>
-            <span class="info-usuario-texto-cabecera">{{ field.label }}:</span>
-            <span class="info-usuario-texto">{{ user.plan }}</span>
-          </template>
+    <div class="profile-content">
+      <div class="image-container">
+        <img src="../assets/usuario.png" class="image" />
+      </div>
+      <div v-if="user">
+        <div class="linea-separadora"></div>
+        <div class="info-usuario-general">
+          <div class="info-usuario" v-for="field in fields" :key="field.key">
+            <template v-if="field.key !== 'plan'">
+              <button class="boton-menu-inferior" @click="edit(field.key)">
+                <img src="../assets/edit.png" class="image-edit" />
+              </button>
+              <span class="info-usuario-texto-cabecera">{{ field.label }}:</span>
+              <span class="info-usuario-texto" v-if="editField !== field.key">{{ user[field.key] }}</span>
+              <input v-if="editField === field.key" v-model="editableValue" class="edit-input" />
+              <button v-if="editField === field.key" @click="save">Guardar</button>
+              <button v-if="editField === field.key" @click="cancel">Cancelar</button>
+            </template>
+            <template v-else>
+              <span class="info-usuario-texto-cabecera">{{ field.label }}:</span>
+              <span class="info-usuario-texto">{{ user.plan }}</span>
+            </template>
+          </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <p>No hay usuario logueado.</p>
-    </div>
-    <div class="botones">
-      <button class="button" @click="navigateTo3">
-        <span class="button-text">CAMBIAR PLAN</span>
-      </button>
-      <button class="button" @click="navigateTo2">
-        <span class="button-text">CERRAR SESION</span>
-      </button>
+      <div v-else>
+        <p>No hay usuario logueado.</p>
+      </div>
+      <div class="botones">
+        <button class="button" @click="navigateTo3">
+          <span class="button-text">CAMBIAR PLAN</span>
+        </button>
+        <button class="button" @click="navigateTo2">
+          <span class="button-text">CERRAR SESION</span>
+        </button>
+      </div>
     </div>
     <div v-if="updateSuccess" class="overlay-container">
       <div class="overlay-content">
         <p class="overlay-text">
-          ¡Información actualizada correctamente!, se mostrara en el perfil la proxima vez que inicies sesión 😊
+          ¡Información actualizada correctamente!, se mostrará en el perfil la próxima vez que inicies sesión 😊
         </p>
         <div class="botones">
           <button class="button-pop-up" @click="redirectToProfile">
@@ -115,30 +117,31 @@ function redirectToProfile() {
   updateSuccess.value = false;
   router.push({ name: 'profile' }); // Redirigir al perfil para actualizar visualmente
 }
+
 function goBack() {
-    router.back();
-  }
+  router.push({ name: 'home' });
+}
 </script>
-  
-  <style scoped>
-  .edit-input {
-    margin: 5px;
-    padding: 5px;
-  }
-  .image-edit {
-    cursor: pointer;
-    width: 20px;
-  }
+
+<style scoped>
 .container-general {
   flex: 1;
   background-color: black;
-  padding: 15% 10% 5% 10%;
+  padding: 5% 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Asegura que el contenedor ocupe al menos toda la pantalla */
 }
+
 .back-arrow {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0; /* Elimina el padding del botón */
+  align-self: flex-start; /* Alinea el botón a la izquierda */
+  margin-bottom: 20px; /* Añade margen inferior para separación */
 }
 
 .back-arrow-image {
@@ -147,73 +150,98 @@ function goBack() {
   display: block; /* Asegura que la imagen no tenga margen extra */
 }
 
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Añade margen inferior para separación */
+}
+
 .image {
-  width: 225px;
-  height: 225px;
+  width: 150px; /* Aumenta el tamaño de la imagen */
+  height: 150px;
 }
-.image-edit {
-  width: 40px;
-  height: 40px;
-}
+
 .linea-separadora {
   width: 100%;
-  height: 1%;
-  margin-vertical: 20px;
+  height: 4px;
+  margin: 20px 0;
   background-color: #FAC710;
 }
+
 .info-usuario-general {
-  flex: 1;
+  display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
+  align-items: flex-start; /* Alinea a la izquierda para una mejor lectura */
 }
+
 .info-usuario {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-vertical: 3%;
+  margin: 10px 0;
+  width: 100%;
 }
+
 .info-usuario-texto-cabecera {
   font-size: 20px;
   font-weight: bold;
-  margin-left: 10px;
   color: white;
+  flex: 1; /* Permite que el texto de la cabecera ocupe espacio disponible */
 }
+
 .info-usuario-texto {
   font-size: 20px;
-  margin-left: 10px;
   color: white;
+  flex: 2; /* Permite que el texto de la información ocupe más espacio */
 }
+
+.image-edit {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px; /* Añade margen derecho para separación */
+}
+
+.edit-input {
+  flex: 2;
+  padding: 5px;
+  margin-right: 10px; /* Añade margen derecho para separación */
+}
+
 .botones {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
 }
+
 .button {
   width: 100%;
+  max-width: 300px;
   height: 50px;
   background-color: #FAC710;
   border-radius: 5px;
-  margin-top: 15px;
+  margin: 10px 0; /* Añade margen superior e inferior para separación */
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .button-text {
   font-size: 20px;
   font-weight: bold;
   color: #000000;
 }
-.button-pop-up {
-  background-color: #FAC710;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
 
-.button-pop-up:hover {
-  background-color: #e5b500;
-}
 .overlay-container {
   position: fixed;
   top: 0;
@@ -232,5 +260,25 @@ function goBack() {
   border-radius: 10px;
   text-align: center;
 }
+
+.button-pop-up {
+  background-color: #FAC710;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.button-pop-up:hover {
+  background-color: #e5b500;
+}
+.boton-menu-inferior {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 </style>
-  
