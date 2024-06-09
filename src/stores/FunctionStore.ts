@@ -48,7 +48,7 @@ export interface  User {
     actions: {
       async fetchUser(email: string, password: string): Promise<User | null> {
         try {
-          const response = await fetch(`http://localhost:5008/User`);
+          const response = await fetch(`http://protacticback.retocsv.es:80/User`);
           const users: User[] = await response.json();
           const user = users.find(user => user.email === email && user.password === password);
           if (user) {
@@ -65,7 +65,7 @@ export interface  User {
       },
       async checkUserExists(email: string): Promise<boolean> {
         try {
-          const response = await fetch('http://localhost:5008/User');
+          const response = await fetch('http://protacticback.retocsv.es:80/User');
           if (!response.ok) {
             throw new Error('Failed to fetch users');
           }
@@ -84,7 +84,7 @@ export interface  User {
             throw new Error('El correo electrónico ya está registrado');
           }
           
-          const response = await fetch('http://localhost:5008/User', {
+          const response = await fetch('http://protacticback.retocsv.es:80/User', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -114,7 +114,7 @@ export interface  User {
           return false;
         }
         try {
-          const response = await fetch(`http://localhost:5008/User/${updatedUser.userId}`, {
+          const response = await fetch(`http://protacticback.retocsv.es:80/User/${updatedUser.userId}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
@@ -144,7 +144,7 @@ export interface  User {
       },
   async fetchPlanes() {
     try {
-      const response = await fetch('http://localhost:5008/Plan'); // Ajusta la URL si es necesario
+      const response = await fetch('http://protacticback.retocsv.es:80/Plan'); // Ajusta la URL si es necesario
       if (!response.ok) {
         throw new Error('Failed to fetch plans');
       }
@@ -158,7 +158,7 @@ export interface  User {
     if (!this.user) return;
     
     try {
-      const response = await fetch(`http://localhost:5008/User/${this.user.userId}`, {
+      const response = await fetch(`http://protacticback.retocsv.es:80/User/${this.user.userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -175,7 +175,7 @@ export interface  User {
   },
   async fetchUsers() {
     try {
-      const response = await fetch('http://localhost:5008/User');
+      const response = await fetch('http://protacticback.retocsv.es:80/User');
       if (!response.ok) {
         throw new Error('Failed to fetch users');
       }
@@ -187,7 +187,7 @@ export interface  User {
   async fetchAmigos() {
     if (!this.user) return;
     try {
-      const response = await fetch(`http://localhost:5008/Amigo?usuario=${this.user.email}`);
+      const response = await fetch(`http://protacticback.retocsv.es:80/Amigo?usuario=${this.user.email}`);
       if (!response.ok) {
         throw new Error('Failed to fetch amigos');
       }
@@ -200,7 +200,7 @@ export interface  User {
     if (!this.user) return;
     try {
       const amigo: Amigo = { usuario: this.user.email, amigos: email };
-      const response = await fetch('http://localhost:5008/Amigo', {
+      const response = await fetch('http://protacticback.retocsv.es:80/Amigo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ export interface  User {
         if (!amigo || !amigo.amigoId) {
           throw new Error('Amigo no encontrado o ID no definido');
         }
-        const response = await fetch(`http://localhost:5008/Amigo/${amigo.amigoId}`, {
+        const response = await fetch(`http://protacticback.retocsv.es:80/Amigo/${amigo.amigoId}`, {
           method: 'DELETE',
         });
         if (!response.ok) {

@@ -45,7 +45,7 @@ export const useExerciseStore = defineStore('exerciseStore', {
       actions: {
         async fetchEjercicios() {
           try {
-            const response = await fetch('http://localhost:5008/Exercise');
+            const response = await fetch('http://protacticback.retocsv.es:80/Exercise');
             if (!response.ok) {
               throw new Error('Failed to fetch exercises');
             }
@@ -63,7 +63,7 @@ export const useExerciseStore = defineStore('exerciseStore', {
               if (!exercise.imagen) {
                 exercise.imagen = '.src/assets/ejes/3.gif'; // Asignar una imagen por defecto
               }
-              const response = await fetch('http://localhost:5008/Exercise', {
+              const response = await fetch('http://protacticback.retocsv.es:80/Exercise', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -83,7 +83,7 @@ export const useExerciseStore = defineStore('exerciseStore', {
           },
           async fetchUsageData() {
             try {
-              const response = await fetch('http://localhost:5008/Usage');
+              const response = await fetch('http://protacticback.retocsv.es:80/Usage');
               if (!response.ok) {
                 throw new Error('Failed to fetch usage data');
               }

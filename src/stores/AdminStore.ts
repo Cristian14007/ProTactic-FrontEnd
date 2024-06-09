@@ -60,7 +60,7 @@ export const useAdminStore = defineStore('adminStore', {
   actions: {
     async fetchData(api: string) {
       try {
-        const response = await fetch(`http://localhost:5008/${api}`);
+        const response = await fetch(`http://protacticback.retocsv.es:80/${api}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch data from ${api}`);
         }
@@ -73,7 +73,7 @@ export const useAdminStore = defineStore('adminStore', {
     },
     async updateData(api: string, item: any) {
       try {
-        const response = await fetch(`http://localhost:5008/${api}/${item.id}`, {
+        const response = await fetch(`http://protacticback.retocsv.es:80/${api}/${item.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ export const useAdminStore = defineStore('adminStore', {
     },
     async deleteData(api: string, id: number) {
       try {
-        const response = await fetch(`http://localhost:5008/${api}/${id}`, {
+        const response = await fetch(`http://protacticback.retocsv.es:80/${api}/${id}`, {
           method: 'DELETE'
         });
         if (!response.ok) {
